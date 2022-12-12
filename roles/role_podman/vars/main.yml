@@ -1,0 +1,5 @@
+---
+# vars file for ansible_role_macos_bootstrap
+brew_packages:
+  - podman
+  - qemu

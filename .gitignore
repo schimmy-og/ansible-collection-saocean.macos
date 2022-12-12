@@ -1,0 +1,6 @@
+.cache/
+.git/
+.python-version
+.DS_Store
+requirements-lock.txt
+vars.yml
