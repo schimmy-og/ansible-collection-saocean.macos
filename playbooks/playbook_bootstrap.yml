@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  connection: local
+  roles:
+    - role: geerlingguy.mac.homebrew
+      vars:
+        homebrew_installed_packages:
+          - gawk
+          - gnu-indent
+          - gnu-sed
+          - gnu-tar
+          - gnu-which
+          - gnupg
+          - grep
+    - role: saocean.macos.role_podman
