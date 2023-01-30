@@ -1,6 +1,11 @@
 ---
 # tasks file for macos_bootstrap
 
+- name: Determine Homebrew ownership variables
+  set_fact:
+    homebrew_user: '{{ homebrew_user | default(ansible_user_id) }}'
+    homebrew_group: '{{ homebrew_group | default(ansible_user_gid) }}'
+
 - name: "Install podman HomeBrew Packages"
   homebrew:
     name: "{{ brew_packages }}"
@@ -10,7 +15,7 @@
   ansible.builtin.file:
     src: /usr/local/bin/podman
     dest: /usr/local/bin/docker
-    owner: mschimmel
-    group: admin
+    owner: "{{ homebrew_user }}"
+    group: "{{ homebrew_group }}"
     force: true
     state: link
