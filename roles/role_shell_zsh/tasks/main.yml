@@ -1,33 +1,15 @@
 ---
 # tasks file for role_shell_zsh
 
-- name: Download oh-my-zsh Script
-  ansible.builtin.uri:
-    url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-    return_content: true
-  register: oh_my_zsh_install
+- name: Include oh-my-zsh Tasks
+  ansible.builtin.include_tasks: oh_my_zsh.yml
 
-- name: Run oh-my-zsh Setup
-  ansible.builtin.shell:
-    cmd: sh -s -- -y
-    stdin: "{{ oh_my_zsh_install.content }}"
-  changed_when: ("is now installed!" in oh_my_zsh_setup.stdout)
-  failed_when: >
-    (oh_my_zsh_setup.rc == 1) and
-    ("The $ZSH folder already exists" not in oh_my_zsh_setup.stdout)
-  register: oh_my_zsh_setup
+- name: Copy and Paste .custom_alias Configuration
+  ansible.builtin.copy:
+    src: custom_alias
+    dest: "{{ ansible_env.HOME }}/.custom_alias"
 
-- name: Return Resullt
-  ansible.builtin.debug:
-    msg: "{{ oh_my_zsh_setup.stdout_lines }}"
-
-- name: Test
-  ansible.builtin.debug:
-    var: ansible_facts
-
-- name: Download oh-my-zsh powerlevel10k Theme
-  ansible.builtin.git:
-    repo: 'https://github.com/romkatv/powerlevel10k.git'
-    depth: 1
-    dest: "{{ ansible_env.ZSH }}/custom/themes/powerlevel10k"
-    
+- name: Copy and Paste .zshrc Configuration
+  ansible.builtin.copy:
+    src: zshrc
+    dest: "{{ ansible_env.HOME }}/.zshrc"

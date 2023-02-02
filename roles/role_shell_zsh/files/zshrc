@@ -87,10 +87,12 @@ plugins=(
     gitfast
     jira
     zsh-autosuggestions
+    zsh-completions
     z
     web-search
     zsh-syntax-highlighting
 )
+fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 source $ZSH/oh-my-zsh.sh
 
 # User configuration

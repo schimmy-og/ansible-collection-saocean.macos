@@ -1,2 +1,7 @@
 ---
 # vars file for role_shell_zsh
+
+zsh_users_plugins:
+  - zsh-autosuggestions
+  - zsh-completions
+  - zsh-syntax-highlighting
