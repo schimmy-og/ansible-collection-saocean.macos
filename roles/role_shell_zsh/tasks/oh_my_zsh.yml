@@ -38,3 +38,4 @@
   ansible.builtin.copy:
     src: p10k_zsh
     dest: "{{ ansible_env.HOME }}/.p10k.zsh"
+    mode: 0640

@@ -4,12 +4,11 @@
 - name: Include oh-my-zsh Tasks
   ansible.builtin.include_tasks: oh_my_zsh.yml
 
-- name: Copy and Paste .custom_alias Configuration
-  ansible.builtin.copy:
-    src: custom_alias
-    dest: "{{ ansible_env.HOME }}/.custom_alias"
+- name: Include .custom_alias Tasks
+  ansible.builtin.include_tasks: custom_alias.yml
 
 - name: Copy and Paste .zshrc Configuration
   ansible.builtin.copy:
     src: zshrc
     dest: "{{ ansible_env.HOME }}/.zshrc"
+    mode: 0640

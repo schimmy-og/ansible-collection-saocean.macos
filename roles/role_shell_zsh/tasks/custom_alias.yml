@@ -1,0 +1,8 @@
+---
+# tasks file for role_shell_zsh
+
+- name: Touch a file, using symbolic modes to set the permissions (equivalent to 0644)
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.custom_alias"
+    state: touch
+    mode: 0640
