@@ -1,0 +1,11 @@
+---
+# tasks file for role_shell_zsh
+
+- name: Include oh-my-zsh Tasks
+  ansible.builtin.include_tasks: oh_my_zsh.yml
+
+- name: Include .custom_alias Tasks
+  ansible.builtin.include_tasks: custom_alias.yml
+
+- name: Include zshrc Tasks
+  ansible.builtin.include_tasks: zshrc.yml

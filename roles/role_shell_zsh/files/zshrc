@@ -1,0 +1,3 @@
+#kubectl
+[[ /usr/local/opt/kubectl ]] && source <(kubectl completion zsh)
+

@@ -13,5 +13,9 @@
           - gnu-which
           - gnupg
           - grep
-          - pyenv
+    - role: saocean.macos.role_shell_zsh
+      tags: "role_shell_zsh"
+    - role: saocean.macos.role_python
+      tags: "role_python"
     - role: saocean.macos.role_podman
+      tags: "role_podman"

@@ -1,0 +1,11 @@
+---
+# tasks file for role_python
+
+- name: python .zshrc Block
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - python .zshrc"
+    block: |
+      #PYENV
+      eval "$(pyenv init -)"
+      eval "$(pyenv virtualenv-init -)"
