@@ -10,3 +10,6 @@
   homebrew:
     name: "{{ brew_packages }}"
     state: present
+
+- name: Include zshrc Tasks
+  ansible.builtin.include_tasks: zshrc.yml

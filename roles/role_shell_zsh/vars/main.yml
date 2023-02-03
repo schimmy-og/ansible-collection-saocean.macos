@@ -1,6 +1,19 @@
 ---
 # vars file for role_shell_zsh
 
+zsh_builtin_plugins:
+  - brew
+  - bgnotify
+  - colored-man-pages
+  - colorize
+  - docker
+  - gitfast
+  - history-substring-search
+  - jira
+  - macos
+  - web-search
+  - z
+
 zsh_users_plugins:
   - zsh-autosuggestions
   - zsh-completions

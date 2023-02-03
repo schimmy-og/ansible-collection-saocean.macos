@@ -17,9 +17,10 @@
     ("The $ZSH folder already exists" not in oh_my_zsh_setup.stdout)
   register: oh_my_zsh_setup
 
-- name: Return Resullt
+- name: ohmyzsh New Install Output
   ansible.builtin.debug:
     msg: "{{ oh_my_zsh_setup.stdout_lines }}"
+  when: oh_my_zsh_setup.changed
 
 - name: Download oh-my-zsh powerlevel10k Theme
   ansible.builtin.git:
