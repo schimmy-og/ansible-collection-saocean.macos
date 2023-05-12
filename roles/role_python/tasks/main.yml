@@ -2,7 +2,7 @@
 # tasks file for role_python
 
 - name: Determine Homebrew ownership variables
-  set_fact:
+  ansible.builtin.set_fact:
     homebrew_user: '{{ homebrew_user | default(ansible_user_id) }}'
     homebrew_group: '{{ homebrew_group | default(ansible_user_gid) }}'
 
@@ -13,3 +13,6 @@
 
 - name: Include zshrc Tasks
   ansible.builtin.include_tasks: zshrc.yml
+
+- name: Include pyENV Tasks
+  ansible.builtin.include_tasks: pyenv.yml

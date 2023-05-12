@@ -1,0 +1,29 @@
+---
+# tasks file for role_shell_zsh
+
+- name: Check if .zprofile exists
+  stat:
+    path: "{{ ansible_env.HOME }}/.zprofile"
+  register: zprofile_init
+
+- name: Create .zprofile if it doesn't already exist
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.zprofile"
+    state: touch
+    mode: '0640'
+  when: not zprofile_init.stat.exists
+
+- name: GNU .zprofile Block
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.zprofile"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - GNU .zprofile"
+    block: |
+      if type brew &>/dev/null; then
+        HOMEBREW_PREFIX=$(brew --prefix)
+        NEWPATH=${PATH}
+        # gnubin; gnuman
+        for d in ${HOMEBREW_PREFIX}/opt/*/libexec/gnubin; do NEWPATH=$d:$NEWPATH; done
+        # I actually like that man grep gives the BSD grep man page
+        #for d in ${HOMEBREW_PREFIX}/opt/*/libexec/gnuman; do export MANPATH=$d:$MANPATH; done
+        export PATH=$(echo ${NEWPATH} | tr ':' '\n' | cat -n | sort -uk2 | sort -n | cut -f2- | xargs | tr ' ' ':')
+      fi

@@ -2,6 +2,7 @@
 # vars file for role_shell_zsh
 
 zsh_builtin_plugins:
+  - aws
   - brew
   - bgnotify
   - colored-man-pages
