@@ -1,5 +1,2 @@
 ---
 # vars file for role_python
-brew_packages:
-  - pyenv
-  - pyenv-virtualenv

@@ -1,0 +1,5 @@
+---
+# defaults file for role_pre_bootstrap
+
+pip_installed_modules:
+  - jmespath

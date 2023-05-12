@@ -5,12 +5,10 @@
   stat:
     path: "{{ ansible_env.HOME }}/.custom_alias"
   register: custom_alias_init
-  
+
 - name: Create .custom_alias if it doesn't already exist
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.custom_alias"
     state: touch
-    mode: 0640
-  when: >
-    (not custom_alias_init.stat.exists) and
-    (custom_alias_init.stat.mode == '0640')
+    mode: '0640'
+  when: not custom_alias_init.stat.exists

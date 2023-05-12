@@ -1,10 +1,19 @@
 ---
 - hosts: localhost
   connection: local
+  vars_files: "../vars.yml"
+  tasks:
   roles:
+    - role: saocean.macos.role_pre_bootstrap
+      tags: "role_pre_bootstrap"
+
     - role: geerlingguy.mac.homebrew
       vars:
         homebrew_installed_packages:
+          - coreutils
+          - diffutils
+          - findutils
+          - git
           - gawk
           - gnu-indent
           - gnu-sed
@@ -13,9 +22,20 @@
           - gnu-which
           - gnupg
           - grep
+          - gzip
+          - jq
+          - less
+          - make
+          - openssl
+          - watch
+          - wdiff
+          - zip
+      tags: "role_homebrew"
     - role: saocean.macos.role_shell_zsh
       tags: "role_shell_zsh"
+    - role: saocean.macos.role_finder
+      tags: "role_finder"
     - role: saocean.macos.role_python
       tags: "role_python"
-    - role: saocean.macos.role_podman
-      tags: "role_podman"
+    # - role: saocean.macos.role_podman
+    #   tags: "role_podman"

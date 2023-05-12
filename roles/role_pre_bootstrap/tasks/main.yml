@@ -1,0 +1,6 @@
+---
+# tasks file for role_pre_bootstrap
+
+- name: "Install PIP Modules"
+  ansible.builtin.pip:
+    name: "{{ pip_installed_modules }}"

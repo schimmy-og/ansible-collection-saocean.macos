@@ -22,6 +22,11 @@
     msg: "{{ oh_my_zsh_setup.stdout_lines }}"
   when: oh_my_zsh_setup.changed
 
+- name: Export ZSH env in case of first time run
+  ansible.builtin.shell:
+    cmd: export ZSH="{{ ansible_env.HOME }}/.oh-my-zsh"
+  when: not 'ZSH' in ansible_env
+
 - name: Download oh-my-zsh powerlevel10k Theme
   ansible.builtin.git:
     repo: 'https://github.com/romkatv/powerlevel10k.git'
@@ -39,4 +44,4 @@
   ansible.builtin.copy:
     src: p10k_zsh
     dest: "{{ ansible_env.HOME }}/.p10k.zsh"
-    mode: 0640
+    mode: '0640'

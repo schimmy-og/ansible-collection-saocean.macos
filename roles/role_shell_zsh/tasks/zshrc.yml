@@ -5,15 +5,13 @@
   stat:
     path: "{{ ansible_env.HOME }}/.zshrc"
   register: zshrc_init
-  
+
 - name: Create .zshrc if it doesn't already exist
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.zshrc"
     state: touch
-    mode: 0640
-  when: >
-    (not zshrc_init.stat.exists) and
-    (zshrc_init.stat.mode == '0640')
+    mode: '0640'
+  when: not zshrc_init.stat.exists
 
 - name: ohmyzsh .zshrc Block
   ansible.builtin.blockinfile:
@@ -138,5 +136,6 @@
       # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-      #Aliases
+      # Sourced Files
+      source ~/.zprofile
       source ~/.custom_alias

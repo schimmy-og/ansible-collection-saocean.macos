@@ -1,0 +1,5 @@
+---
+# tasks file for role_finder
+
+- name: Include AdHoc Commands
+  ansible.builtin.include_tasks: adhoc.yml
