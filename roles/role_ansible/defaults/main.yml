@@ -1,2 +1,7 @@
 ---
 # defaults file for role_ansible
+
+pip_installed_modules:
+  - ansible
+  - ansible-lint
+  - yamllint

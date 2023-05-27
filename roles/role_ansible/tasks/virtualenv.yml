@@ -1,0 +1,5 @@
+---
+# tasks file for role_ansible
+
+- name: "Include pyENV virtualENV Tasks"
+  ansible.builtin.include_tasks: ../../role_python/tasks/virtualenv.yml

@@ -11,11 +11,19 @@
     name: "{{ brew_packages }}"
     state: present
 
+- name: "Check if docker symbolic link exists"
+  ansible.builtin.stat:
+   path: "{{ docker_path }}"
+  register: docker_link_status
+
 - name: "Create a symbolic link for docker to podman"
   ansible.builtin.file:
-    src: /usr/local/bin/podman
-    dest: /usr/local/bin/docker
-    owner: "{{ homebrew_user }}"
-    group: "{{ homebrew_group }}"
-    force: true
+    src: "{{ podman_path }}"
+    dest: "{{ docker_path }}"
+    owner: root
     state: link
+  when: docker_link_status.islnk is defined and docker_link_status.islnk
+  become: true
+
+- name: "Include PodMan Machine Tasks"
+  ansible.builtin.include_tasks: podman_machine.yml

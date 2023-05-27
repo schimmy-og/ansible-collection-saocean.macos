@@ -1,11 +1,6 @@
 ---
 # tasks file for role_python
 
-- name: Determine Homebrew ownership variables
-  ansible.builtin.set_fact:
-    homebrew_user: '{{ homebrew_user | default(ansible_user_id) }}'
-    homebrew_group: '{{ homebrew_group | default(ansible_user_gid) }}'
-
 - name: "Install Python HomeBrew Packages"
   homebrew:
     name: "{{ brew_packages }}"
@@ -14,5 +9,11 @@
 - name: Include zshrc Tasks
   ansible.builtin.include_tasks: zshrc.yml
 
-- name: Include pyENV Tasks
-  ansible.builtin.include_tasks: pyenv.yml
+- name: Include pyENV Global Tasks
+  ansible.builtin.include_tasks: pyenv_global.yml
+
+- name: "Install PIP Modules"
+  ansible.builtin.pip:
+    name: "{{ pip_installed_modules }}"
+  become: true
+  become_user: "{{ ansible_env.USER }}"

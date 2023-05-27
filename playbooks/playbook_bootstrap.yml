@@ -1,5 +1,7 @@
 ---
-- hosts: localhost
+
+- name: MacOS Bootstrap Playbook
+  hosts: localhost
   connection: local
   vars_files: "../vars.yml"
   tasks:
@@ -26,6 +28,7 @@
           - jq
           - less
           - make
+          - node
           - openssl
           - watch
           - wdiff
@@ -37,5 +40,9 @@
       tags: "role_finder"
     - role: saocean.macos.role_python
       tags: "role_python"
-    # - role: saocean.macos.role_podman
-    #   tags: "role_podman"
+    - role: saocean.macos.role_podman
+      tags: "role_podman"
+    - role: saocean.macos.role_ansible
+      tags: "role_ansible"
+    - role: saocean.macos.role_terraform
+      tags: "role_terraform"

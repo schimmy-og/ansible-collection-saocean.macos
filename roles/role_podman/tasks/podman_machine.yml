@@ -1,0 +1,30 @@
+---
+# tasks file for macos_bootstrap
+
+- name: "Check if there is a PodMan Machine"
+  ansible.builtin.command: podman machine list --format json
+  changed_when: false
+  register: podman_machine_list
+
+- name: "Initialize PodMan Machine if it doesn't Exist"
+  ansible.builtin.command: "podman machine init {{ podman_machine.name }} --cpus={{ podman_machine.cpus }} --memory={{ podman_machine.memory_mb }}"
+  when: not podman_machine_list.stdout | from_json | json_query('[? Name==`' + podman_machine.name + '`]') | length == 1
+  poll: 5
+  async: 1200
+
+- name: "Set FACT for containing PodMan Machine Info if exists"
+  set_fact:
+    podman_machine_info: "{{ podman_machine_list.stdout | from_json | json_query('[? Name==`' + podman_machine.name + '`]') }}"
+  when: podman_machine_list.stdout | from_json | json_query('[? Name==`' + podman_machine.name + '`]') | length == 1
+
+- name: "Set PodMan Machine CPUs"
+  ansible.builtin.command: "podman machine set --cpus={{ podman_machine.cpus }}"
+  when:
+    - (podman_machine_info is defined)
+    - (podman_machine_info | json_query('[*].CPUs') | first != podman_machine.cpus)
+
+- name: "Set PodMan Machine Memory"
+  ansible.builtin.command: "podman machine set --memory={{ podman_machine.memory_mb }}"
+  when:
+   - (podman_machine_info is defined)
+   - (podman_machine_info | json_query('[*].Memory') | first | int) != (podman_machine.memory_mb | human_to_bytes(default_unit='M') | int)

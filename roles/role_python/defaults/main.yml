@@ -1,9 +1,12 @@
 ---
 # defaults file for role_python
 brew_packages:
+  - pyenv
+  - pyenv-virtualenv
   - readline
   - sqlite3
   - xz
   - zlib
-  - pyenv
-  - pyenv-virtualenv
+
+pip_installed_modules:
+  - jmespath
