@@ -11,7 +11,10 @@
 
     - role: geerlingguy.mac.homebrew
       vars:
+        homebrew_cask_apps:
+          - aws-vault
         homebrew_installed_packages:
+          - awscli
           - coreutils
           - diffutils
           - findutils
@@ -30,9 +33,18 @@
           - make
           - node
           - openssl
+          - qemu
+          - podman
+          - pyenv
+          - pyenv-virtualenv
+          - readline
+          - sqlite3
+          - tfenv
           - watch
           - wdiff
+          - xz
           - zip
+          - zlib
       tags: "role_homebrew"
     - role: saocean.macos.role_shell_zsh
       tags: "role_shell_zsh"
@@ -46,3 +58,7 @@
       tags: "role_ansible"
     - role: saocean.macos.role_terraform
       tags: "role_terraform"
+    - role: saocean.macos.role_aws
+      tags: "role_aws"
+    - role: saocean.macos.role_internal
+      tags: "role_internal"

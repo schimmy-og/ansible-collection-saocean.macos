@@ -1,0 +1,18 @@
+---
+# tasks file for role_internal
+
+- name: "Install PIP Internal Modules"
+  ansible.builtin.pip:
+    name: "{{ item.name | default(item) }}"
+    extra_args: "-i https://{{ item.index_url }}"
+    state: "{{ item.state | default('present') }}"
+  loop: "{{ pip_internal_modules }}"
+  when: pip_internal_modules is defined
+
+- name: "Create Internal Symlinks"
+  ansible.builtin.file:
+    src: "{{ central_storage }}/{{ item.src_dir }}/{{ item.name }}"
+    dest: "{{ item.dest_dir }}/{{ item.name }}"
+    state: link
+  loop: "{{ links_internal }}"
+  when: links_internal is defined

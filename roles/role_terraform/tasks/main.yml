@@ -1,7 +1,5 @@
 ---
 # tasks file for role_terraform
 
-- name: "Install Terraform HomeBrew Packages"
-  homebrew:
-    name: "{{ brew_packages }}"
-    state: present
+- name: Include tfENV Tasks
+  ansible.builtin.include_tasks: tfenv.yml

@@ -1,5 +1,5 @@
 ---
-# defaults file for role_bootstrap
+# defaults file for role_podman
 
 docker_path: "/usr/local/bin/docker"
 podman_path: "/opt/homebrew/bin/podman"
