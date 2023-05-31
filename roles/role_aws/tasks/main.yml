@@ -1,0 +1,22 @@
+---
+# tasks file for role_aws
+
+- debug:
+    msg: "{{ ansible_env.HOME }}/.aws/credentials"
+
+- debug:
+    msg: "{{ central_storage }}/aws/credentials"
+
+- debug:
+    var: aws_creds_link_status
+
+- name: "Create .aws Directory if it doesn't Exist"
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.aws"
+    state: directory
+
+- name: "Create a symbolic link for aws credentials file"
+  ansible.builtin.file:
+    src: "{{ central_storage }}/aws/credentials"
+    dest: "{{ ansible_env.HOME }}/.aws/credentials"
+    state: link

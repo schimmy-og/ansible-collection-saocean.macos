@@ -1,0 +1,5 @@
+---
+# tasks file for role_terraform
+
+- name: Include tfENV Tasks
+  ansible.builtin.include_tasks: tfenv.yml

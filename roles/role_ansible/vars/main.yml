@@ -1,2 +1,7 @@
 ---
 # vars file for role_ansible
+
+python_version: "3.11.2"
+virtual_env_name: "ansible"
+
+

@@ -1,22 +1,19 @@
 ---
-# tasks file for role_shell_zsh
+# tasks file for role_finder
 
 - name: Get macOS Defaults
   ansible.builtin.shell:
-    cmd: defaults read
+    cmd: defaults read com.apple.Finder | grep AppleShowAll
   changed_when: false
   register: macos_defaults
 
-- debug:
-    msg: "{{ macos_defaults | community.general.json_query('*') }}"
+- name: Reveal Hidden Files and Folders
+  ansible.builtin.shell:
+    cmd: defaults write com.apple.Finder AppleShowAllFiles 1
+  register: hidden_files_and_folders
+  when: >
+    not (macos_defaults | regex_search('AppleShowAllFiles = true | AppleShowAllFiles = 1'))
 
-# - name: Reveal Hidden Files and Folders
-#   ansible.builtin.shell:
-#     cmd: defaults write com.apple.Finder AppleShowAllFiles true
-#   when: macos_defaults | community.general.json_query('domain.server[*].name')
-#   register: hidden_files_and_folders
-
-# - name: Restart Finder
-#   ansible.builtin.shell:
-#     cmd: defaults write com.apple.Finder AppleShowAllFiles true
-#   changed_when: hidden_files_and_folders.changed
+- name: Restart Finder
+  ansible.builtin.command: killall Finder
+  changed_when: hidden_files_and_folders.changed

@@ -1,0 +1,51 @@
+---
+# tasks file for role_terraform
+
+- name: Check installed Versions of Terraform
+  ansible.builtin.command: tfenv list
+  changed_when: false
+  failed_when: false
+  become: true
+  become_user: "{{ ansible_env.USER }}"
+  register: tfenv_versions
+
+- name: Install tfenv Global Terraform Version
+  ansible.builtin.command: "tfenv install {{ global_terraform_version }}"
+  register: tfenv_install
+  become: true
+  become_user: "{{ ansible_env.USER }}"
+  when: not tfenv_versions.stdout is search(global_terraform_version)
+
+- name: Show tfenv Install output if completed
+  ansible.builtin.debug:
+    msg: "{{ tfenv_install.stdout_lines + tfenv_install.stderr_lines }}"
+  when: tfenv_install.changed
+
+- name: Set tfenv Global Terraform Version
+  ansible.builtin.shell:
+    cmd: "tfenv use {{ global_terraform_version }} && tfenv version-name"
+  register: tfenv_global_set
+  changed_when: tfenv_global_set is search(global_terraform_version)
+  become: true
+  become_user: "{{ ansible_env.USER }}"
+  when: tfenv_install.changed
+
+- name: Get tfenv Version
+  ansible.builtin.command: tfenv version-name
+  changed_when: false
+  become: true
+  become_user: "{{ ansible_env.USER }}"
+  register: tfenv_version
+
+- name: Get Terraform Version
+  ansible.builtin.command: terraform --version
+  changed_when: false
+  become: true
+  become_user: "{{ ansible_env.USER }}"
+  register: terraform_version
+
+- name: Show tfenv and Terraform Versions
+  ansible.builtin.debug:
+    msg:
+      - "tfenv Reported Version is {{ tfenv_version.stdout_lines }}"
+      - "Terraform Reported Version is {{ terraform_version.stdout_lines }}"

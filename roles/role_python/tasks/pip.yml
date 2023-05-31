@@ -1,0 +1,8 @@
+---
+# tasks file for role_python
+
+- name: "Install PIP Modules"
+  ansible.builtin.pip:
+    name: "{{ pip_modules }}"
+  become: true
+  become_user: "{{ ansible_env.USER }}"

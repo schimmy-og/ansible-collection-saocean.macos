@@ -1,0 +1,13 @@
+---
+# tasks file for role_python
+
+- name: Check installed Versions of Python
+  ansible.builtin.command: pyenv versions
+  changed_when: false
+  become: true
+  become_user: "{{ ansible_env.USER }}"
+  register: pyenv_versions
+
+- name: Create pyenv virtualenv
+  ansible.builtin.command: pyenv virtualenv {{ python_version }} {{ virtual_env_name }}_{{ python_version | replace(".", "_")}}
+  when: not pyenv_versions is search(python_version + '\/envs\/' + virtual_env_name + '_' + (python_version | replace('.', '_')))
