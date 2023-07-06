@@ -2,5 +2,6 @@
 .git/
 .python-version
 .DS_Store
+ansible.cfg
 requirements-lock.txt
 vars.yml

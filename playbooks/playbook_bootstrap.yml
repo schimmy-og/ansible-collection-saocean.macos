@@ -13,6 +13,8 @@
       vars:
         homebrew_cask_apps:
           - aws-vault
+        homebrew_taps:
+          - hashicorp/tap
         homebrew_installed_packages:
           - awscli
           - coreutils
@@ -28,6 +30,7 @@
           - gnupg
           - grep
           - gzip
+          - hashicorp/tap/vault
           - jq
           - less
           - make
@@ -35,11 +38,14 @@
           - openssl
           - qemu
           - podman
+          - pre-commit
           - pyenv
           - pyenv-virtualenv
           - readline
           - sqlite3
           - tfenv
+          - tflint
+          - tfsec
           - watch
           - wdiff
           - xz
@@ -62,3 +68,5 @@
       tags: "role_aws"
     - role: saocean.macos.role_internal
       tags: "role_internal"
+    - role: saocean.macos.role_git
+      tags: "role_git"
