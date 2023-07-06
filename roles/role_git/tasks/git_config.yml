@@ -1,0 +1,8 @@
+# tasks file for role_git
+
+- name: "Configure Local GIT Config"
+  community.general.git_config:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    scope: local
+  loop: "{{ local.git | dict2items }}"
