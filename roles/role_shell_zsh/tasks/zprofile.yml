@@ -27,3 +27,13 @@
         #for d in ${HOMEBREW_PREFIX}/opt/*/libexec/gnuman; do export MANPATH=$d:$MANPATH; done
         export PATH=$(echo ${NEWPATH} | tr ':' '\n' | cat -n | sort -uk2 | sort -n | cut -f2- | xargs | tr ' ' ':')
       fi
+
+- name: ZSH PATHS Block
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.zprofile"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - PATHS .zprofile"
+    block: |
+      {% for item in global.zsh.paths %}
+      path+=('{{ item }}')
+      {% endfor %}
+      export PATH

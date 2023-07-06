@@ -28,3 +28,18 @@
   when:
    - (podman_machine_info is defined)
    - (podman_machine_info | json_query('[*].Memory') | first | int) != (podman_machine.memory_mb | human_to_bytes(default_unit='M') | int)
+
+- name: "Check PodMan Version"
+  ansible.builtin.shell:
+    cmd: podman --version | awk '{print $3}'
+  changed_when: false
+  register: podman_version
+
+- name: "Install PodMan Mac Helper - MUST USE BECOME"
+  ansible.builtin.command: >
+    /opt/homebrew/Cellar/podman/{{ podman_version.stdout }}/bin/podman-mac-helper install
+  become: true
+  become_method: sudo
+  register: podman_mac_helper_status
+  changed_when: >
+    not podman_mac_helper_status is search('helper is already installed, skipping the install, uninstall first if you want to reinstall')

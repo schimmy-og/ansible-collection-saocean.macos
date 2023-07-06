@@ -9,13 +9,13 @@
   register: pyenv_versions
 
 - name: Install pyenv Global Python Version
-  ansible.builtin.command: pyenv install {{ global_python_version }}
+  ansible.builtin.command: pyenv install {{ global.python.version }}
   register: pyenv_install
-  changed_when: pyenv_install is search('Installed Python-'+ global_python_version + ' to '+ ansible_env.HOME + '/.pyenv/versions/' + global_python_version)
+  changed_when: pyenv_install is search('Installed Python-'+ global.python.version + ' to '+ ansible_env.HOME + '/.pyenv/versions/' + global.python.version)
   become: true
   become_user: "{{ ansible_env.USER }}"
   when: >
-    not (global_python_version in pyenv_versions.stdout)
+    not (global.python.version in pyenv_versions.stdout)
 
 - name: Show pyenv Install output if completed
   ansible.builtin.debug:
@@ -24,14 +24,14 @@
 
 - name: Set pyenv Global Python Version
   ansible.builtin.shell:
-    cmd: pyenv global {{ global_python_version }} && pyenv versions
+    cmd: pyenv global {{ global.python.version }} && pyenv versions
   register: pyenv_global_set
   changed_when: >
-    (pyenv_global_set is search('\* ' + global_python_version + '\(set by ' + ansible_env.HOME + '/.pyenv/version\)'))
+    (pyenv_global_set is search('\* ' + global.python.version + '\(set by ' + ansible_env.HOME + '/.pyenv/version\)'))
   become: true
   become_user: "{{ ansible_env.USER }}"
   when: >
-    not (pyenv_versions is search('\* ' + global_python_version + '\(set by ' + ansible_env.HOME + '/.pyenv/version\)'))
+    not (pyenv_versions is search('\* ' + global.python.version + '\(set by ' + ansible_env.HOME + '/.pyenv/version\)'))
 
 - name: Get pyenv Version
   ansible.builtin.command: pyenv versions

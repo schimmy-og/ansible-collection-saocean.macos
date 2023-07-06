@@ -10,11 +10,11 @@
   register: tfenv_versions
 
 - name: Install tfenv Global Terraform Version
-  ansible.builtin.command: "tfenv install {{ global_terraform_version }}"
+  ansible.builtin.command: "tfenv install {{ global.terraform.version }}"
   register: tfenv_install
   become: true
   become_user: "{{ ansible_env.USER }}"
-  when: not tfenv_versions.stdout is search(global_terraform_version)
+  when: not tfenv_versions.stdout is search(global.terraform.version)
 
 - name: Show tfenv Install output if completed
   ansible.builtin.debug:
@@ -23,9 +23,9 @@
 
 - name: Set tfenv Global Terraform Version
   ansible.builtin.shell:
-    cmd: "tfenv use {{ global_terraform_version }} && tfenv version-name"
+    cmd: "tfenv use {{ global.terraform.version }} && tfenv version-name"
   register: tfenv_global_set
-  changed_when: tfenv_global_set is search(global_terraform_version)
+  changed_when: tfenv_global_set is search(global.terraform.version)
   become: true
   become_user: "{{ ansible_env.USER }}"
   when: tfenv_install.changed
