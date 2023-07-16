@@ -2,7 +2,6 @@
 # defaults file for role_podman
 
 docker_path: "/usr/local/bin/docker"
-podman_path: "/opt/homebrew/bin/podman"
 
 podman_machine:
   name: "podman-machine-default"

@@ -9,10 +9,6 @@
   loop: "{{ pip_internal_modules }}"
   when: pip_internal_modules is defined
 
-- name: "Create Internal Symlinks"
-  ansible.builtin.file:
-    src: "{{ central_storage }}/{{ item.src_dir }}/{{ item.name }}"
-    dest: "{{ item.dest_dir }}/{{ item.name }}"
-    state: link
+- name: "Include Symlink Tasks"
+  ansible.builtin.include_tasks: symlinks.yml
   loop: "{{ links_internal }}"
-  when: links_internal is defined
