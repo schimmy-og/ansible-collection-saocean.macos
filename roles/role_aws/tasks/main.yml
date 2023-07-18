@@ -14,9 +14,3 @@
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.aws"
     state: directory
-
-- name: "Create a symbolic link for aws credentials file"
-  ansible.builtin.file:
-    src: "{{ central_storage }}/aws/credentials"
-    dest: "{{ ansible_env.HOME }}/.aws/credentials"
-    state: link

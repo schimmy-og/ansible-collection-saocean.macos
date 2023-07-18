@@ -1,9 +1,14 @@
 ---
 # tasks file for macos_bootstrap
 
+- name: Get podman binary path
+  ansible.builtin.command: "which podman"
+  register: podman_path
+  changed_when: false
+
 - name: "Create a symbolic link for docker to podman - MUST USE BECOME"
   ansible.builtin.file:
-    src: "{{ podman_path }}"
+    src: "{{ podman_path.stdout }}"
     dest: "{{ docker_path }}"
     owner: root
     state: link

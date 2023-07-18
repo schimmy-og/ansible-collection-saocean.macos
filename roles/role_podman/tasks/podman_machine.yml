@@ -35,7 +35,7 @@
   changed_when: false
   register: podman_version
 
-- name: "Install PodMan Mac Helper - MUST USE BECOME"
+- name: "Install PodMan Mac Helper - HomeBrew Install Path - MUST USE BECOME"
   ansible.builtin.command: >
     /opt/homebrew/Cellar/podman/{{ podman_version.stdout }}/bin/podman-mac-helper install
   become: true
@@ -43,3 +43,14 @@
   register: podman_mac_helper_status
   changed_when: >
     not podman_mac_helper_status is search('helper is already installed, skipping the install, uninstall first if you want to reinstall')
+  when: podman_path.stdout == "/opt/homebrew/bin/podman"
+
+- name: "Install PodMan Mac Helper - Standard Install Path - MUST USE BECOME"
+  ansible.builtin.command: >
+    /usr/local/bin/podman-mac-helper install
+  become: true
+  become_method: sudo
+  register: podman_mac_helper_status
+  changed_when: >
+    not podman_mac_helper_status is search('helper is already installed, skipping the install, uninstall first if you want to reinstall')
+  when: podman_path.stdout == "/usr/local/bin/podman"
