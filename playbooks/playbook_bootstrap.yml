@@ -4,69 +4,97 @@
   hosts: localhost
   connection: local
   vars_files: "../vars.yml"
-  tasks:
+  vars:
+    homebrew_cask_apps:
+      - aws-vault
+    homebrew_taps:
+      - hashicorp/tap
+    homebrew_installed_packages:
+      - awscli
+      - coreutils
+      - diffutils
+      - findutils
+      - git
+      - gawk
+      - gnu-indent
+      - gnu-sed
+      - gnu-tar
+      - gnu-time
+      - gnu-which
+      - gnupg
+      - grep
+      - gzip
+      - hashicorp/tap/vault
+      - jq
+      - less
+      - make
+      - node
+      - openssl
+      - qemu
+      - podman
+      - pre-commit
+      - pyenv
+      - pyenv-virtualenv
+      - readline
+      - sqlite3
+      - tfenv
+      - tflint
+      - tfsec
+      - watch
+      - wdiff
+      - xz
+      - zip
+      - zlib
+      
+  pre_tasks:
+    - name: Create Internal and Global Brew Taps List
+      ansible.builtin.set_fact:
+        homebrew_taps: "{{ homebrew_taps + internal.homebrew.taps }}"
+      when: internal.homebrew is defined and internal.homebrew.taps is defined
+      tags: "role_homebrew"
+
+    - name: Create Internal and Global Brew Cask List
+      ansible.builtin.set_fact:
+        homebrew_cask_apps: "{{ homebrew_cask_apps + internal.homebrew.casks }}"
+      when: internal.homebrew is defined and internal.homebrew.casks is defined
+      tags: "role_homebrew"
+    
+    - name: Create Internal and Global Brew Package List
+      ansible.builtin.set_fact:
+        homebrew_installed_packages: "{{ homebrew_installed_packages + internal.homebrew.packages }}"
+      when: internal.homebrew is defined and internal.homebrew.packages is defined
+      tags: "role_homebrew"
+         
   roles:
     - role: saocean.macos.role_pre_bootstrap
       tags: "role_pre_bootstrap"
 
     - role: geerlingguy.mac.homebrew
-      vars:
-        homebrew_cask_apps:
-          - aws-vault
-        homebrew_taps:
-          - hashicorp/tap
-        homebrew_installed_packages:
-          - awscli
-          - coreutils
-          - diffutils
-          - findutils
-          - git
-          - gawk
-          - gnu-indent
-          - gnu-sed
-          - gnu-tar
-          - gnu-time
-          - gnu-which
-          - gnupg
-          - grep
-          - gzip
-          - hashicorp/tap/vault
-          - jq
-          - less
-          - make
-          - node
-          - openssl
-          - qemu
-          - podman
-          - pre-commit
-          - pyenv
-          - pyenv-virtualenv
-          - readline
-          - sqlite3
-          - tfenv
-          - tflint
-          - tfsec
-          - watch
-          - wdiff
-          - xz
-          - zip
-          - zlib
       tags: "role_homebrew"
+
     - role: saocean.macos.role_shell_zsh
       tags: "role_shell_zsh"
+
     - role: saocean.macos.role_finder
       tags: "role_finder"
+
     - role: saocean.macos.role_python
       tags: "role_python"
+
     - role: saocean.macos.role_podman
       tags: "role_podman"
+
     - role: saocean.macos.role_ansible
       tags: "role_ansible"
+
     - role: saocean.macos.role_terraform
       tags: "role_terraform"
+
     - role: saocean.macos.role_aws
       tags: "role_aws"
+
     - role: saocean.macos.role_internal
       tags: "role_internal"
+
     - role: saocean.macos.role_git
       tags: "role_git"

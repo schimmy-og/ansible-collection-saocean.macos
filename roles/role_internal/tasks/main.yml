@@ -11,4 +11,5 @@
 
 - name: "Include Symlink Tasks"
   ansible.builtin.include_tasks: symlinks.yml
-  loop: "{{ links_internal }}"
+  loop: "{{ internal.symlinks }}"
+
