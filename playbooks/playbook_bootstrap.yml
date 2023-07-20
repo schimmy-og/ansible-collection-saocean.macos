@@ -37,6 +37,7 @@
       - pyenv-virtualenv
       - readline
       - sqlite3
+      - terraform-docs
       - tfenv
       - tflint
       - tfsec

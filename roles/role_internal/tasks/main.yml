@@ -6,10 +6,11 @@
     name: "{{ item.name | default(item) }}"
     extra_args: "--index-url https://{{ item.index_url | default(omit) }} --extra-index-url https://{{ item.extra_index_url | default(omit) }}"
     state: "{{ item.state | default('present') }}"
-  loop: "{{ pip_internal_modules }}"
-  when: pip_internal_modules is defined
+  loop: "{{ internal.pip_modules }}"
+  when: internal.pip_modules is defined
 
 - name: "Include Symlink Tasks"
   ansible.builtin.include_tasks: symlinks.yml
   loop: "{{ internal.symlinks }}"
+  when: internal.symlinks is defined
 
