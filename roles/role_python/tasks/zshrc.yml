@@ -4,7 +4,9 @@
 - name: python .zshrc Block
   ansible.builtin.blockinfile:
     path: "{{ ansible_env.HOME }}/.zshrc"
-    marker: "# {mark} ANSIBLE MANAGED BLOCK - python .zshrc"
+    marker: "{mark} ANSIBLE MANAGED BLOCK - python .zshrc"
+    marker_begin: '\n# BEGIN' 
+    marker_end: '# END'
     block: |
       # PYENV
       export PYENV_ROOT="$HOME/.pyenv"

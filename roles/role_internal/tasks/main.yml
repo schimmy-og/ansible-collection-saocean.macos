@@ -14,3 +14,14 @@
   loop: "{{ internal.symlinks }}"
   when: internal.symlinks is defined
 
+- name: ".zshrc Internal Blocks for {{ item.name }}"
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    marker: "{mark} ANSIBLE MANAGED BLOCK - {{ item.name }} .zshrc"
+    marker_begin: '\n# BEGIN' 
+    marker_end: '# END'
+    block: |
+      {{ item.block }}
+  loop: "{{ internal.zshrc }}"
+  when: internal.zshrc is defined
+
