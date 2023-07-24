@@ -4,9 +4,7 @@
   hosts: localhost
   connection: local
   vars_files: "../vars.yml"
-  vars:
-    homebrew_cask_apps:
-      - aws-vault
+  vars: 
     homebrew_taps:
       - hashicorp/tap
     homebrew_installed_packages:

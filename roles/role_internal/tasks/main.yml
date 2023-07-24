@@ -14,3 +14,22 @@
   loop: "{{ internal.symlinks }}"
   when: internal.symlinks is defined
 
+- name: ".zshrc Internal Blocks for {{ item.name }}"
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - {{ item.name }} .zshrc"
+    marker_begin: 'BEGIN' 
+    marker_end: 'END'
+    block: |
+      {{ item.block }}
+  loop: "{{ internal.zshrc }}"
+  when: internal.zshrc is defined
+
+- name: .zshrc Internal Blocks PADDING
+  ansible.builtin.replace:
+    dest: "{{ ansible_env.HOME }}/.zshrc"
+    regexp: "(?<!\n\n)(# BEGIN ANSIBLE MANAGED BLOCK - {{ item.name }} .zshrc)"
+    replace: '\n\1' 
+  loop: "{{ internal.zshrc }}"
+  when: internal.zshrc is defined
+

@@ -5,6 +5,8 @@
   ansible.builtin.blockinfile:
     path: "{{ ansible_env.HOME }}/.zshrc"
     marker: "# {mark} ANSIBLE MANAGED BLOCK - python .zshrc"
+    marker_begin: 'BEGIN' 
+    marker_end: 'END'
     block: |
       # PYENV
       export PYENV_ROOT="$HOME/.pyenv"
@@ -12,3 +14,9 @@
       eval "$(pyenv init --path)"
       eval "$(pyenv init -)"
       eval "$(pyenv virtualenv-init -)"
+  
+- name: python .zshrc Block PADDING
+  ansible.builtin.replace:
+    dest: "{{ ansible_env.HOME }}/.zshrc"
+    regexp: "(?<!\n\n)(# BEGIN ANSIBLE MANAGED BLOCK - python .zshrc)"
+    replace: '\n\1' 
