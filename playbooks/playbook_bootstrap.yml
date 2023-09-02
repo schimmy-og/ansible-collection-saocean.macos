@@ -4,7 +4,7 @@
   hosts: localhost
   connection: local
   vars_files: "../vars.yml"
-  vars: 
+  vars:
     homebrew_taps:
       - hashicorp/tap
     homebrew_installed_packages:
@@ -44,7 +44,7 @@
       - xz
       - zip
       - zlib
-      
+
   pre_tasks:
     - name: Create Internal and Global Brew Taps List
       ansible.builtin.set_fact:
@@ -57,13 +57,13 @@
         homebrew_cask_apps: "{{ homebrew_cask_apps + internal.homebrew.casks }}"
       when: internal.homebrew is defined and internal.homebrew.casks is defined
       tags: "role_homebrew"
-    
+
     - name: Create Internal and Global Brew Package List
       ansible.builtin.set_fact:
         homebrew_installed_packages: "{{ homebrew_installed_packages + internal.homebrew.packages }}"
       when: internal.homebrew is defined and internal.homebrew.packages is defined
       tags: "role_homebrew"
-         
+
   roles:
     - role: saocean.macos.role_pre_bootstrap
       tags: "role_pre_bootstrap"

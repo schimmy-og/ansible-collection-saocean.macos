@@ -4,12 +4,12 @@
 - name: Symlink Block
   when: links_internal is defined 
   block:
-    - name: Check if requested Internal Symlinks Destination exists
+    - name: "Check if requested Internal Symlinks Destination exists for {{ item.file_name }}"
       ansible.builtin.stat:
         path: "{{ item.dest_dir }}/{{ item.file_name }}"
       register: internal_dest_file
 
-    - name: "Create Internal Symlinks"
+    - name: "Create Internal Symlinks for {{ item.file_name }}"
       ansible.builtin.file:
         src: "{{ central_storage }}/{{ item.src_dir }}/{{ item.file_name }}"
         dest: "{{ item.dest_dir }}/{{ item.file_name }}"

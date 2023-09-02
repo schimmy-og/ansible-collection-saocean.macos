@@ -9,7 +9,7 @@
   loop: "{{ internal.pip_modules }}"
   when: internal.pip_modules is defined
 
-- name: "Include Symlink Tasks"
+- name: "Include Symlink Tasks for {{ item.file_name }}"
   ansible.builtin.include_tasks: symlinks.yml
   loop: "{{ internal.symlinks }}"
   when: internal.symlinks is defined
