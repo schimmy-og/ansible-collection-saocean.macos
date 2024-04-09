@@ -7,8 +7,11 @@
   vars:
     homebrew_taps:
       - hashicorp/tap
+    homebrew_cask_apps:
+      - google-cloud-sdk
     homebrew_installed_packages:
       - awscli
+      - azure-cli
       - coreutils
       - diffutils
       - findutils
@@ -24,6 +27,7 @@
       - gzip
       - hashicorp/tap/vault
       - jq
+      - kubectl
       - less
       - make
       - node
@@ -41,7 +45,7 @@
       - tfsec
       - watch
       - wdiff
-      - xz
+      # - xz
       - zip
       - zlib
 

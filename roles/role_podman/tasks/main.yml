@@ -6,13 +6,28 @@
   register: podman_path
   changed_when: false
 
+- name: Temporarily Overwrite homebrew_user variable with the user
+  ansible.builtin.set_fact:
+    homebrew_user: "{{ ansible_user_id }}"
+    homebrew_group: "{{ ansible_user_gid }}"
+
 - name: "Create a symbolic link for docker to podman - MUST USE BECOME"
   ansible.builtin.file:
     src: "{{ podman_path.stdout }}"
     dest: "{{ docker_path }}"
-    owner: root
+    owner: "{{ homebrew_user }}"
     state: link
   become: true
+
+- name: Unset Homebrew ownership variables
+  ansible.builtin.set_fact:
+    homebrew_user: null
+    homebrew_group: null
+
+- name: Reset Homebrew ownership variables
+  set_fact:
+    homebrew_user: '{{ homebrew_user | default(ansible_user_id) }}'
+    homebrew_group: '{{ homebrew_group | default(ansible_user_gid) }}'
 
 - name: "Include PodMan Machine Tasks"
   ansible.builtin.include_tasks: podman_machine.yml

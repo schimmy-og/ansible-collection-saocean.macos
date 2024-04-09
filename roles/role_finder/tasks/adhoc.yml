@@ -5,11 +5,13 @@
   ansible.builtin.shell:
     cmd: defaults read com.apple.Finder | grep AppleShowAll
   changed_when: false
+  failed_when: false
   register: macos_defaults
 
 - name: Reveal Hidden Files and Folders
   ansible.builtin.shell:
-    cmd: defaults write com.apple.Finder AppleShowAllFiles 1
+    cmd: >
+      defaults write com.apple.Finder AppleShowAllFiles -bool "true"
   register: hidden_files_and_folders
   when: >
     not (macos_defaults | regex_search('AppleShowAllFiles = true | AppleShowAllFiles = 1'))
