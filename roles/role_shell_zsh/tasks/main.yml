@@ -7,6 +7,9 @@
 - name: Include .custom_alias Tasks
   ansible.builtin.include_tasks: custom_alias.yml
 
+- name: Include .vimrc Tasks
+  ansible.builtin.include_tasks: vimrc.yml
+
 - name: Include zprofile Tasks
   ansible.builtin.include_tasks: zprofile.yml
 
