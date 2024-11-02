@@ -2,7 +2,7 @@
 # tasks file for role_pre_bootstrap
 
 - name: Determine Homebrew ownership variables
-  set_fact:
+  ansible.builtin.set_fact:
     homebrew_user: '{{ homebrew_user | default(ansible_user_id) }}'
     homebrew_group: '{{ homebrew_group | default(ansible_user_gid) }}'
 
@@ -10,11 +10,20 @@
   ansible.builtin.pip:
     name: "{{ pip_installed_modules }}"
 
+- name: "Check if /usr/local/bin exists"
+  ansible.builtin.stat:
+    path: /usr/local/bin
+  register: usr_local_bin_status
+
 - name: "Create /usr/local/bin directory"
   ansible.builtin.file:
     path: /usr/local/bin
     state: directory
-    mode: 0755
+    mode: '0755'
     owner: "{{ homebrew_user }}"
     group: "{{ homebrew_group }}"
   become: true
+  when:
+    - not usr_local_bin_status.stat.exists
+    - not usr_local_bin_status.stat.mode == '0755'
+    - not usr_local_bin_status.stat.gid == homebrew_group
