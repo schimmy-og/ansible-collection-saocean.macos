@@ -3,6 +3,7 @@
 
 - name: "Install PIP Modules"
   ansible.builtin.pip:
-    name: "{{ pip_modules }}"
+    name: "{{ pip_modules + ['ansible'] }}" 
   become: true
   become_user: "{{ ansible_env.USER }}"
+
