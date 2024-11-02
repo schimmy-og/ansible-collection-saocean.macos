@@ -1,5 +1,5 @@
 ---
-# defaults file for role_podman
+# tasks file for role_container_runtime
 
 docker_path: "/usr/local/bin/docker"
 
