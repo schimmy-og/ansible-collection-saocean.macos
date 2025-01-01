@@ -1,0 +1,23 @@
+---
+- name: Check if .vimrc exists
+  stat:
+    path: "{{ ansible_env.HOME }}/.vimrc"
+  register: vimrc_init
+
+- name: Create .vimrc if it doesn't already exist
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.vimrc"
+    state: touch
+    mode: '0640'
+  when: not vimrc_init.stat.exists
+
+- name: Create .vimrc Block
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.vimrc"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - .vimrc"
+    block: |
+      set clipboard=unnamed
+      set backspace=indent,eol,start
+      set number
+      syntax on
+      filetype plugin indent on

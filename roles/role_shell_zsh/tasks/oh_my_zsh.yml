@@ -26,6 +26,7 @@
   ansible.builtin.shell:
     cmd: export ZSH="{{ ansible_env.HOME }}/.oh-my-zsh"
   when: not 'ZSH' in ansible_env
+  ### Reload Environment Variables to pull ansible_env.ZSH to use during execution
 
 - name: Download oh-my-zsh powerlevel10k Theme
   ansible.builtin.git:

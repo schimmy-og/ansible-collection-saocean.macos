@@ -1,0 +1,5 @@
+---
+# tasks file for role_container_runtime
+
+- name: "Include PodMan Machine Tasks"
+  ansible.builtin.include_tasks: podman_machine.yml

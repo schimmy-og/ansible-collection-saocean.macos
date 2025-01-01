@@ -1,0 +1,58 @@
+---
+# tasks file for role_k8s
+
+- name: KIND podman .zshrc Block
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - kind .zshrc"
+    marker_begin: 'BEGIN'
+    marker_end: 'END'
+    block: |
+      # KIND
+      KIND_EXPERIMENTAL_PROVIDER=podman
+  when: container.runtime is defined and container.runtime == "podman"
+
+- name: KIND podman .zshrc Block PADDING
+  ansible.builtin.replace:
+    dest: "{{ ansible_env.HOME }}/.zshrc"
+    regexp: "(?<!\n\n)(# BEGIN ANSIBLE MANAGED BLOCK - kind .zshrc)"
+    replace: '\n\1'
+  when: container.runtime is defined and container.runtime == "podman"
+
+- name: KIND colima .zshrc Block
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - kind .zshrc"
+    marker_begin: 'BEGIN'
+    marker_end: 'END'
+    block: |
+      # KIND
+      COLIMA_VM="default"
+      COLIMA_VM_SOCKET="${HOME}/.colima/${COLIMA_VM}/docker.sock"
+      DOCKER_HOST="unix://${COLIMA_VM_SOCKET}"
+  when: container.runtime is defined and container.runtime == "podman"
+
+- name: KIND colima .zshrc Block PADDING
+  ansible.builtin.replace:
+    dest: "{{ ansible_env.HOME }}/.zshrc"
+    regexp: "(?<!\n\n)(# BEGIN ANSIBLE MANAGED BLOCK - kind .zshrc)"
+    replace: '\n\1'
+  when: container.runtime is defined and container.runtime == "colima"
+
+- name: KUBECTL .zshrc Block
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - kubectl .zshrc"
+    marker_begin: 'BEGIN'
+    marker_end: 'END'
+    block: |
+      #kubectl autocompletion
+      autoload -Uz compinit
+      compinit
+      source <(kubectl completion zsh)
+
+- name: KUBECTL .zshrc Block PADDING
+  ansible.builtin.replace:
+    dest: "{{ ansible_env.HOME }}/.zshrc"
+    regexp: "(?<!\n\n)(# BEGIN ANSIBLE MANAGED BLOCK - kubectl .zshrc)"
+    replace: '\n\1'

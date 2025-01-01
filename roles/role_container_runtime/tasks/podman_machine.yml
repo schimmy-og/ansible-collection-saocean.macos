@@ -1,5 +1,34 @@
 ---
-# tasks file for macos_bootstrap
+# tasks file for role_container_runtime
+
+- name: Get podman binary path
+  ansible.builtin.command: "which podman"
+  register: podman_path
+  changed_when: false
+
+- name: Temporarily Overwrite homebrew_user variable with the user
+  ansible.builtin.set_fact:
+    homebrew_user: "{{ ansible_user_id }}"
+    homebrew_group: "{{ ansible_user_gid }}"
+
+- name: "Create a symbolic link for docker to podman - MUST USE BECOME"
+  ansible.builtin.file:
+    src: "{{ podman_path.stdout }}"
+    dest: "{{ docker_path }}"
+    owner: "{{ homebrew_user }}"
+    state: link
+  become: true
+  when: docker.runtime is defined and docker.runtime == "podman"
+
+- name: Unset Homebrew ownership variables
+  ansible.builtin.set_fact:
+    homebrew_user: null
+    homebrew_group: null
+
+- name: Reset Homebrew ownership variables
+  ansible.builtin.set_fact:
+    homebrew_user: '{{ homebrew_user | default(ansible_user_id) }}'
+    homebrew_group: '{{ homebrew_group | default(ansible_user_gid) }}'
 
 - name: "Check if there is a PodMan Machine"
   ansible.builtin.command: podman machine list --format json
@@ -13,7 +42,7 @@
   async: 1200
 
 - name: "Set FACT for containing PodMan Machine Info if exists"
-  set_fact:
+  ansible.builtin.set_fact:
     podman_machine_info: "{{ podman_machine_list.stdout | from_json | json_query('[? Name==`' + podman_machine.name + '`]') }}"
   when: podman_machine_list.stdout | from_json | json_query('[? Name==`' + podman_machine.name + '`]') | length == 1
 

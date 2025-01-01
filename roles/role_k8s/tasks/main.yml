@@ -1,0 +1,5 @@
+---
+# tasks file for role_k8s
+
+- name: Include zshrc Tasks
+  ansible.builtin.include_tasks: zshrc.yml
